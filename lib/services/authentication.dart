@@ -10,6 +10,7 @@ class Authentication {
   static Future<UserCredential?> signUpWithEmailAndPassword(
     String email,
     String password,
+    String name,
   ) async {
     try {
       final userCredential = await FirebaseAuth.instance
@@ -17,7 +18,7 @@ class Authentication {
       await FirebaseFirestore.instance
           .collection('users')
           .doc(FirebaseAuth.instance.currentUser!.uid)
-          .set({'email': email, 'uid': FirebaseAuth.instance.currentUser!.uid});
+          .set({'email': email, 'uid': FirebaseAuth.instance.currentUser!.uid, 'name': name});
       return userCredential;
     } catch (error) {
       Logger().e(error);

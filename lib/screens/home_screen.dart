@@ -90,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       arguments: ChatScreenModel(
                         userId: doc['uid'],
                         email: doc['email'],
-                        userName: doc['email'].toString().split('@')[0],
+                        userName: doc['name'],
                       ),
                     ),
                     leading: CircleAvatar(
@@ -98,20 +98,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         context,
                       ).colorScheme.primaryContainer,
                       child: Text(
-                        doc['email'][0].toString().toUpperCase() +
-                            doc['email']
-                                .toString()
-                                .split('@')[1][0]
-                                .toUpperCase(),
+                        doc['name'].toString(),
                       ),
                     ),
                     title: Text(
-                      doc['email'].toString().split('@')[0][0].toUpperCase() +
-                          doc['email']
-                              .toString()
-                              .split('@')[0]
-                              .substring(1)
-                              .toLowerCase(),
+                      doc['name'].toString(),
                       style: GoogleFonts.poppins(
                         fontSize: 16.0,
                         color: Theme.of(context).colorScheme.secondary,

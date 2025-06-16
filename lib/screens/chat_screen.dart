@@ -73,8 +73,7 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             Text(
-              widget.receiveruserName[0].toUpperCase() +
-                  widget.receiveruserName.substring(1).toLowerCase(),
+              widget.receiveruserName,
               style: GoogleFonts.poppins(
                 fontSize: 20.0,
                 fontWeight: FontWeight.w500,

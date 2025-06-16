@@ -9,6 +9,7 @@ class SignupScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
 
   SignupScreen({super.key});
 
@@ -32,6 +33,38 @@ class SignupScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 30.0),
+              TextFormField(
+                style: GoogleFonts.poppins(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                controller: nameController,
+                cursorColor: Colors.white,
+                decoration: InputDecoration(
+                  labelText: 'Name',
+                  labelStyle: const TextStyle(color: Colors.grey),
+                  floatingLabelStyle: TextStyle(
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
+                  border: const OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter an name';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16.0),
               TextFormField(
                 style: GoogleFonts.poppins(
                   color: Theme.of(context).colorScheme.secondary,
@@ -148,6 +181,7 @@ class SignupScreen extends StatelessWidget {
                             await Authentication.signUpWithEmailAndPassword(
                           emailController.text,
                           passwordController.text,
+                          nameController.text,
                         );
                         if (user != null) {
                           ScaffoldMessenger.of(context).showSnackBar(
