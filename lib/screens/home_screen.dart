@@ -22,11 +22,13 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: const Icon(Icons.logout, color: Colors.red),
             onPressed: () async {
               await Authentication.signOut();
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                '/login',
-                (route) => false,
-              );
+              if (context.mounted) {
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  '/login',
+                  (route) => false,
+                );
+              }
             },
           ),
         ],
@@ -97,9 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       backgroundColor: Theme.of(
                         context,
                       ).colorScheme.primaryContainer,
-                      child: Text(
-                        doc['name'].toString(),
-                      ),
+                      child: Text(doc['name'].toString()),
                     ),
                     title: Text(
                       doc['name'].toString(),

@@ -152,7 +152,7 @@ class SignupScreen extends StatelessWidget {
                           passwordController.text,
                           nameController.text,
                         );
-                        if (user != null) {
+                        if (user != null && context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               elevation: 5.0,
@@ -174,6 +174,7 @@ class SignupScreen extends StatelessWidget {
                         }
                       } catch (error) {
                         Logger().e(error);
+                        if (!context.mounted) return;
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             elevation: 5.0,

@@ -126,30 +126,32 @@ class LoginScreen extends StatelessWidget {
                             emailController.text,
                             passwordController.text,
                           );
-                      if (user != null) {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          '/home',
-                          (route) => false,
-                        );
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            elevation: 5.0,
-                            behavior: SnackBarBehavior.floating,
-                            padding: const EdgeInsets.all(10.0),
-                            content: Text(
-                              'Something went wrong. Please try again.',
-                              style: GoogleFonts.poppins(
-                                fontSize: 16.0,
-                                color: Colors.red,
+                      if (context.mounted) {
+                        if (user != null) {
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            '/home',
+                            (route) => false,
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              elevation: 5.0,
+                              behavior: SnackBarBehavior.floating,
+                              padding: const EdgeInsets.all(10.0),
+                              content: Text(
+                                'Something went wrong. Please try again.',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 16.0,
+                                  color: Colors.red,
+                                ),
                               ),
+                              backgroundColor: Theme.of(
+                                context,
+                              ).colorScheme.secondary,
                             ),
-                            backgroundColor: Theme.of(
-                              context,
-                            ).colorScheme.secondary,
-                          ),
-                        );
+                          );
+                        }
                       }
                     }
                   },
