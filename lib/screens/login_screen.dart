@@ -21,8 +21,9 @@ class LoginScreen extends StatelessWidget {
         child: Form(
           key: _formKey,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              const SizedBox(height: 20.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -44,7 +45,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 30.0),
+              const SizedBox(height: 20.0),
               TextFormField(
                 style: GoogleFonts.poppins(
                   color: Theme.of(context).colorScheme.secondary,
@@ -171,50 +172,6 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 10.0),
-              // SizedBox(
-              //   width: double.infinity,
-              //   child: SignInButton(
-              //     Buttons.GoogleDark,
-              //     text: "Sign up with Google",
-              //     onPressed: () async {
-              //       try {
-              //         final UserCredential? user =
-              //             await Authentication.signInWithGoogle();
-              //         if (user != null) {
-              //           Navigator.pushNamedAndRemoveUntil(
-              //             context,
-              //             '/home',
-              //             (route) => false,
-              //           );
-              //         } else {
-              //           ScaffoldMessenger.of(context).showSnackBar(
-              //             SnackBar(
-              //               elevation: 5.0,
-              //               behavior: SnackBarBehavior.floating,
-              //               padding: const EdgeInsets.all(10.0),
-              //               content: Text(
-              //                 'Something went wrong. Please try again.',
-              //                 style: GoogleFonts.poppins(
-              //                   fontSize: 16.0,
-              //                   color: Colors.red,
-              //                 ),
-              //               ),
-              //               backgroundColor:
-              //                   Theme.of(context).colorScheme.secondary,
-              //             ),
-              //           );
-              //         }
-              //       } catch (e) {
-              //         Logger().e(e);
-              //       }
-              //     },
-              //     padding: const EdgeInsets.all(10.0),
-              //     shape: RoundedRectangleBorder(
-              //       borderRadius: BorderRadius.circular(8.0),
-              //     ),
-              //   ),
-              // ),
               const SizedBox(height: 10.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

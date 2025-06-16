@@ -22,8 +22,9 @@ class SignupScreen extends StatelessWidget {
         child: Form(
           key: _formKey,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              const SizedBox(height: 20.0),
               Text(
                 'Sign Up',
                 style: GoogleFonts.poppins(
@@ -32,7 +33,7 @@ class SignupScreen extends StatelessWidget {
                   color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
-              const SizedBox(height: 30.0),
+              const SizedBox(height: 20.0),
               TextFormField(
                 style: GoogleFonts.poppins(
                   color: Theme.of(context).colorScheme.secondary,
@@ -136,39 +137,6 @@ class SignupScreen extends StatelessWidget {
                   return null;
                 },
               ),
-              const SizedBox(height: 16.0),
-              TextFormField(
-                controller: confirmPasswordController,
-                obscureText: true,
-                cursorColor: Colors.white,
-                style: GoogleFonts.poppins(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-                decoration: InputDecoration(
-                  labelText: 'Confirm Password',
-                  labelStyle: const TextStyle(color: Colors.grey),
-                  floatingLabelStyle: TextStyle(
-                    color: Theme.of(context).colorScheme.primaryContainer,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                  border: const OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value != passwordController.text) {
-                    return 'Passwords do not match';
-                  }
-                  return null;
-                },
-              ),
               const SizedBox(height: 20.0),
               SizedBox(
                 width: double.infinity,
@@ -244,21 +212,6 @@ class SignupScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10.0),
-              // SignInButton(
-              //   Buttons.GoogleDark,
-              //   text: "Sign up with Google",
-              //   onPressed: () async {
-              //     final UserCredential? user = await Authentication.signInWithGoogle();
-              //     if (user != null) {
-              //       Navigator.pushNamedAndRemoveUntil(
-              //         context,
-              //         '/home',
-              //         (route) => false,
-              //       );
-              //     }
-              //   },
-              // ),
-              const SizedBox(height: 10.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -274,7 +227,9 @@ class SignupScreen extends StatelessWidget {
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.zero,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/login');
+                    },
                     child: Text(
                       "Login",
                       style: GoogleFonts.poppins(
