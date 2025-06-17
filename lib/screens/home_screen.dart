@@ -78,48 +78,51 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             );
           }
-          return ListView(
-            children: snapshot.data!.docs
-                .where(
-                  (doc) =>
-                      doc['email'] != FirebaseAuth.instance.currentUser!.email,
-                )
-                .map<Widget>(
-                  (doc) => ListTile(
-                    onTap: () => Navigator.pushNamed(
-                      context,
-                      '/chat',
-                      arguments: ChatScreenModel(
-                        userId: doc['uid'],
-                        email: doc['email'],
-                        userName: doc['name'],
-                      ),
-                    ),
-                    leading: CircleAvatar(
-                      backgroundColor: Theme.of(
+          return Scrollbar(
+            child: ListView(
+              children: snapshot.data!.docs
+                  .where(
+                    (doc) =>
+                        doc['email'] !=
+                        FirebaseAuth.instance.currentUser!.email,
+                  )
+                  .map<Widget>(
+                    (doc) => ListTile(
+                      onTap: () => Navigator.pushNamed(
                         context,
-                      ).colorScheme.primaryContainer,
-                      child: Text(doc['name'].toString()),
-                    ),
-                    title: Text(
-                      doc['name'].toString(),
-                      style: GoogleFonts.poppins(
-                        fontSize: 16.0,
-                        color: Theme.of(context).colorScheme.secondary,
-                        fontWeight: FontWeight.w500,
+                        '/chat',
+                        arguments: ChatScreenModel(
+                          userId: doc['uid'],
+                          email: doc['email'],
+                          userName: doc['name'],
+                        ),
+                      ),
+                      leading: CircleAvatar(
+                        backgroundColor: Theme.of(
+                          context,
+                        ).colorScheme.primaryContainer,
+                        child: Text(doc['name'].toString()),
+                      ),
+                      title: Text(
+                        doc['name'].toString(),
+                        style: GoogleFonts.poppins(
+                          fontSize: 16.0,
+                          color: Theme.of(context).colorScheme.secondary,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      subtitle: Text(
+                        doc['email'],
+                        style: GoogleFonts.poppins(
+                          fontSize: 14.0,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     ),
-                    subtitle: Text(
-                      doc['email'],
-                      style: GoogleFonts.poppins(
-                        fontSize: 14.0,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                )
-                .toList(),
+                  )
+                  .toList(),
+            ),
           );
         },
       ),
