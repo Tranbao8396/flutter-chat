@@ -63,7 +63,7 @@ class MessageBubble extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 5.0),
-                if (imageUrl != null && imageUrl!.isNotEmpty)
+                if (imageUrl != null && imageUrl!.isNotEmpty && File(imageUrl!).existsSync())
                   Padding(
                     padding: const EdgeInsets.only(top: 5.0),
                     child: Image.file(
