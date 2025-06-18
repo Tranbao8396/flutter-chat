@@ -120,23 +120,26 @@ class _ChatScreenState extends State<ChatScreen> {
 
                   return Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: ListView(
-                      controller: _scrollController,
-                      children: snapshot.data!.docs.map((document) {
-                        final Map<String, dynamic> data =
-                            document.data() as Map<String, dynamic>;
-                        return MessageBubble(
-                          message: data['message'],
-                          timestamp: data['timestamp'],
-                          userName: data['senderEmail'].toString().split(
-                            "@",
-                          )[0],
-                          alignment:
-                              data['senderId'] == _firebaseAuth.currentUser!.uid
-                              ? Alignment.centerRight
-                              : Alignment.centerLeft,
-                        );
-                      }).toList(),
+                    child: Scrollbar(
+                      child: ListView(
+                        controller: _scrollController,
+                        children: snapshot.data!.docs.map((document) {
+                          final Map<String, dynamic> data =
+                              document.data() as Map<String, dynamic>;
+                          return MessageBubble(
+                            message: data['message'],
+                            timestamp: data['timestamp'],
+                            userName: data['senderEmail'].toString().split(
+                              "@",
+                            )[0],
+                            alignment:
+                                data['senderId'] ==
+                                    _firebaseAuth.currentUser!.uid
+                                ? Alignment.centerRight
+                                : Alignment.centerLeft,
+                          );
+                        }).toList(),
+                      ),
                     ),
                   );
                 },
