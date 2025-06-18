@@ -44,6 +44,7 @@ dependencies:
   intl: ^0.20.2
   another_flutter_splash_screen: ^1.2.1
   image_picker: ^1.1.2
+  firebase_messaging: ^15.2.7
 
 dev_dependencies:
   flutter_test:
