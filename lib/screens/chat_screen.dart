@@ -60,7 +60,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Future imagePick() async {
     final pickedImage = await picker.pickImage(
-      source: ImageSource.camera,
+      source: ImageSource.gallery,
       maxWidth: 160,
       imageQuality: 100,
     );

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -64,16 +63,6 @@ class MessageBubble extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 5.0),
-                // Text(
-                //   imageUrl!,
-                //   style: GoogleFonts.poppins(
-                //     fontSize: 16.0,
-                //     color: alignment == Alignment.centerRight
-                //         ? Theme.of(context).colorScheme.secondary
-                //         : Theme.of(context).primaryColor,
-                //     fontWeight: FontWeight.w400,
-                //   ),
-                // ),
                 if (imageUrl != null && imageUrl!.isNotEmpty)
                   Padding(
                     padding: const EdgeInsets.only(top: 5.0),
