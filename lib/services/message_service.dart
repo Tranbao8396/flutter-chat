@@ -50,6 +50,7 @@ class MessageService extends ChangeNotifier {
   Future<void> sendImage({
     required String imageUrl,
     required String email,
+    String? message,
   }) async {
     final Timestamp timestamp = Timestamp.now();
     final String currentUserId = _firebaseAuth.currentUser!.uid;
@@ -63,7 +64,7 @@ class MessageService extends ChangeNotifier {
         .collection('messages')
         .add(
           MessageModel(
-            message: '',
+            message: message ?? '',
             receiverId: email,
             timestamp: timestamp,
             senderId: currentUserId,

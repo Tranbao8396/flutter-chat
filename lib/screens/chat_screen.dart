@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:multi_message/services/message_service.dart';
 import 'package:multi_message/widgets/message_bubble.dart';
 
@@ -25,6 +26,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _messageController = TextEditingController();
+  final picker = ImagePicker();
 
   void _scrollToBottom() {
     if (_scrollController.hasClients) {
@@ -53,6 +55,39 @@ class _ChatScreenState extends State<ChatScreen> {
         message: _messageController.text,
       );
       _messageController.clear();
+    }
+  }
+
+  Future imagePick() async {
+    final pickedImage = await picker.pickImage(
+      source: ImageSource.camera,
+      maxWidth: 160,
+      imageQuality: 100,
+    );
+
+    // Send the image to the message service
+    setState(() {});
+
+    if (pickedImage != null) {
+      await _messageService.sendImage(
+        imageUrl: pickedImage.path,
+        email: widget.receiverUserId,
+        message: _messageController.text.isNotEmpty
+            ? _messageController.text
+            : null,
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          showCloseIcon: true,
+          content: Text(
+            'No image selected',
+            style: GoogleFonts.poppins(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      );
     }
   }
 
@@ -128,6 +163,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             document.data() as Map<String, dynamic>;
                         return MessageBubble(
                           message: data['message'],
+                          imageUrl: data['imageUrl'] ?? '',
                           timestamp: data['timestamp'],
                           userName: data['senderEmail'].toString().split(
                             "@",
@@ -184,11 +220,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   Padding(
                     padding: const EdgeInsets.only(left: 1.0),
                     child: IconButton(
-                      onPressed: () async {
-                        // Implement image sending functionality here
-                        // For example, you can use an image picker to select an image
-                        // and then call _messageService.sendImage(imageUrl: imageUrl, email: widget.receiverUserId);
-                      },
+                      onPressed: () async => imagePick(),
                       icon: Icon(Icons.image, color: Colors.white, size: 40.0),
                     ),
                   ),
