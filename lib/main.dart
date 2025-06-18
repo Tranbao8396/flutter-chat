@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const HomeScreen(),
       },
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Messenger',
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(

@@ -56,75 +56,78 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       backgroundColor: Theme.of(context).primaryColor,
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('users').snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Center(
-              child: Text(
-                'Something went wrong',
-                style: GoogleFonts.poppins(
-                  fontSize: 18.0,
-                  color: Colors.red,
-                  fontWeight: FontWeight.w500,
+      body: Padding(
+        padding: const EdgeInsets.only(bottom: 20.0),
+        child: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance.collection('users').snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Center(
+                child: Text(
+                  'Something went wrong',
+                  style: GoogleFonts.poppins(
+                    fontSize: 18.0,
+                    color: Colors.red,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-            );
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: Theme.of(context).colorScheme.primaryContainer,
-              ),
-            );
-          }
-          return Scrollbar(
-            child: ListView(
-              children: snapshot.data!.docs
-                  .where(
-                    (doc) =>
-                        doc['email'] !=
-                        FirebaseAuth.instance.currentUser!.email,
-                  )
-                  .map<Widget>(
-                    (doc) => ListTile(
-                      onTap: () => Navigator.pushNamed(
-                        context,
-                        '/chat',
-                        arguments: ChatScreenModel(
-                          userId: doc['uid'],
-                          email: doc['email'],
-                          userName: doc['name'],
-                        ),
-                      ),
-                      leading: CircleAvatar(
-                        backgroundColor: Theme.of(
+              );
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                ),
+              );
+            }
+            return Scrollbar(
+              child: ListView(
+                children: snapshot.data!.docs
+                    .where(
+                      (doc) =>
+                          doc['email'] !=
+                          FirebaseAuth.instance.currentUser!.email,
+                    )
+                    .map<Widget>(
+                      (doc) => ListTile(
+                        onTap: () => Navigator.pushNamed(
                           context,
-                        ).colorScheme.primaryContainer,
-                        child: Text(doc['name'].toString()),
-                      ),
-                      title: Text(
-                        doc['name'].toString(),
-                        style: GoogleFonts.poppins(
-                          fontSize: 16.0,
-                          color: Theme.of(context).colorScheme.secondary,
-                          fontWeight: FontWeight.w500,
+                          '/chat',
+                          arguments: ChatScreenModel(
+                            userId: doc['uid'],
+                            email: doc['email'],
+                            userName: doc['name'],
+                          ),
+                        ),
+                        leading: CircleAvatar(
+                          backgroundColor: Theme.of(
+                            context,
+                          ).colorScheme.primaryContainer,
+                          child: Text(doc['name'].toString()),
+                        ),
+                        title: Text(
+                          doc['name'].toString(),
+                          style: GoogleFonts.poppins(
+                            fontSize: 16.0,
+                            color: Theme.of(context).colorScheme.secondary,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        subtitle: Text(
+                          doc['email'],
+                          style: GoogleFonts.poppins(
+                            fontSize: 14.0,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                       ),
-                      subtitle: Text(
-                        doc['email'],
-                        style: GoogleFonts.poppins(
-                          fontSize: 14.0,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ),
-                  )
-                  .toList(),
-            ),
-          );
-        },
+                    )
+                    .toList(),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

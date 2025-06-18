@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:logger/web.dart';
-// import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:logger/web.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:multi_message/services/authentication.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -176,6 +176,50 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+                const SizedBox(height: 10.0),
+              SizedBox(
+                width: double.infinity,
+                child: SignInButton(
+                  Buttons.GoogleDark,
+                  text: "Sign up with Google",
+                  onPressed: () async {
+                    try {
+                      final UserCredential? user =
+                          await Authentication.signInWithGoogle();
+                      if (user != null) {
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          '/home',
+                          (route) => false,
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            elevation: 5.0,
+                            behavior: SnackBarBehavior.floating,
+                            padding: const EdgeInsets.all(10.0),
+                            content: Text(
+                              'Something went wrong. Please try again.',
+                              style: GoogleFonts.poppins(
+                                fontSize: 16.0,
+                                color: Colors.red,
+                              ),
+                            ),
+                            backgroundColor:
+                                Theme.of(context).colorScheme.secondary,
+                          ),
+                        );
+                      }
+                    } catch (e) {
+                      Logger().e(e);
+                    }
+                  },
+                  padding: const EdgeInsets.all(10.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+              ),
                 const SizedBox(height: 10.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
