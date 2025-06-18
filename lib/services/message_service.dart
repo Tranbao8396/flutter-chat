@@ -46,4 +46,30 @@ class MessageService extends ChangeNotifier {
         .orderBy('timestamp', descending: false)
         .snapshots();
   }
+
+  Future<void> sendImage({
+    required String imageUrl,
+    required String email,
+  }) async {
+    final Timestamp timestamp = Timestamp.now();
+    final String currentUserId = _firebaseAuth.currentUser!.uid;
+    final String currentUserEmail = _firebaseAuth.currentUser!.email!;
+
+    List<String> chatId = [currentUserId, email];
+    chatId.sort();
+    await _fireStore
+        .collection('chat')
+        .doc(chatId.join("*"))
+        .collection('messages')
+        .add(
+          MessageModel(
+            message: '',
+            receiverId: email,
+            timestamp: timestamp,
+            senderId: currentUserId,
+            senderEmail: currentUserEmail,
+            imageUrl: imageUrl,
+          ).toMap(),
+        );
+  }
 }

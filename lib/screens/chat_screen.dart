@@ -120,26 +120,24 @@ class _ChatScreenState extends State<ChatScreen> {
 
                   return Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: Scrollbar(
-                      child: ListView(
-                        controller: _scrollController,
-                        children: snapshot.data!.docs.map((document) {
-                          final Map<String, dynamic> data =
-                              document.data() as Map<String, dynamic>;
-                          return MessageBubble(
-                            message: data['message'],
-                            timestamp: data['timestamp'],
-                            userName: data['senderEmail'].toString().split(
-                              "@",
-                            )[0],
-                            alignment:
-                                data['senderId'] ==
-                                    _firebaseAuth.currentUser!.uid
-                                ? Alignment.centerRight
-                                : Alignment.centerLeft,
-                          );
-                        }).toList(),
-                      ),
+
+                    child: ListView(
+                      controller: _scrollController,
+                      children: snapshot.data!.docs.map((document) {
+                        final Map<String, dynamic> data =
+                            document.data() as Map<String, dynamic>;
+                        return MessageBubble(
+                          message: data['message'],
+                          timestamp: data['timestamp'],
+                          userName: data['senderEmail'].toString().split(
+                            "@",
+                          )[0],
+                          alignment:
+                              data['senderId'] == _firebaseAuth.currentUser!.uid
+                              ? Alignment.centerRight
+                              : Alignment.centerLeft,
+                        );
+                      }).toList(),
                     ),
                   );
                 },
@@ -184,7 +182,18 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
+                    padding: const EdgeInsets.only(left: 1.0),
+                    child: IconButton(
+                      onPressed: () async {
+                        // Implement image sending functionality here
+                        // For example, you can use an image picker to select an image
+                        // and then call _messageService.sendImage(imageUrl: imageUrl, email: widget.receiverUserId);
+                      },
+                      icon: Icon(Icons.image, color: Colors.white, size: 40.0),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 1.0),
                     child: CircleAvatar(
                       backgroundColor: Theme.of(context).colorScheme.secondary,
                       child: IconButton(
