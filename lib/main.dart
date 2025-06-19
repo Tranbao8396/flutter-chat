@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:logger/logger.dart';
 import 'package:multi_message/models/chat_screen_model.dart';
 import 'package:multi_message/screens/chat_screen.dart';
 import 'package:multi_message/screens/home_screen.dart';
@@ -8,11 +9,18 @@ import 'package:multi_message/screens/login_screen.dart';
 import 'package:multi_message/screens/sign_up_screen.dart';
 import 'package:multi_message/services/authentication.dart';
 import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+// This function will be called when a message is received while the app is in the background
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  Logger().i('Background message: ${message.messageId}');
+}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

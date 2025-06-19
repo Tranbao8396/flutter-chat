@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/web.dart';
 import 'package:multi_message/models/chat_screen_model.dart';
 import 'package:multi_message/services/authentication.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,6 +15,39 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    // thiết lập push notification request
+    FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+    
+    FirebaseMessaging.instance.getToken().then((token) {
+      Logger().i("Thiết bị nhận FCM token: $token");
+      // Bạn cần lưu token này vào database để gửi tin nhắn cho đúng người
+
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update({'fcm_token': token})
+          .then((_) {
+            Logger().i("Token đã được lưu vào Firestore");
+          });
+    });
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      Logger().i(
+        'Nhận được message khi đang mở app: ${message.notification?.title}',
+      );
+      // Hiển thị thông báo hoặc cập nhật UI
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
