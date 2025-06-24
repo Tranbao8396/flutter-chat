@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -63,11 +61,11 @@ class MessageBubble extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 5.0),
-                if (imageUrl != null && imageUrl!.isNotEmpty && File(imageUrl!).existsSync())
+                if (imageUrl != null && imageUrl!.isNotEmpty)
                   Padding(
                     padding: const EdgeInsets.only(top: 5.0),
-                    child: Image.file(
-                      File(imageUrl!),
+                    child: Image.network(
+                      imageUrl!,
                       fit: BoxFit.cover,
                     ),
                   ),

@@ -1,7 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:logger/web.dart';
 import 'package:multi_message/services/message_service.dart';
 import 'package:multi_message/widgets/message_bubble.dart';
 
@@ -58,9 +62,11 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  Future imagePick() async {
+  Future<void> imagePick({
+    bool camera = false,
+  }) async {
     final pickedImage = await picker.pickImage(
-      source: ImageSource.gallery,
+      source: !camera ? ImageSource.gallery : ImageSource.camera,
       maxWidth: 160,
       imageQuality: 100,
     );
@@ -69,13 +75,51 @@ class _ChatScreenState extends State<ChatScreen> {
     setState(() {});
 
     if (pickedImage != null) {
-      await _messageService.sendImage(
-        imageUrl: pickedImage.path,
-        email: widget.receiverUserId,
-        message: _messageController.text.isNotEmpty
+
+      File imageFile = File(pickedImage.path);
+
+      var imageReq = MultipartRequest(
+        'POST',
+         Uri.parse('http://10.0.2.2:3000/upload')
+      );
+
+      imageReq.files.add(
+        await MultipartFile.fromPath(
+          'image',
+          imageFile.path,
+          filename: pickedImage.name,
+        ),
+      );
+
+      var response = await imageReq.send();
+
+      if (response.statusCode != 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            showCloseIcon: true,
+            content: Text(
+              'Failed to upload image',
+              style: GoogleFonts.poppins(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        );
+        return;
+      } else {
+        final responseData = await response.stream.bytesToString();
+        final json = jsonDecode(responseData);
+
+        Logger().i('Image uploaded successfully: ${json['imageUrl']}');
+
+        await _messageService.sendImage(
+          imageUrl: json['imageUrl'],
+          email: widget.receiverUserId,
+          message: _messageController.text.isNotEmpty
             ? _messageController.text
             : null,
-      );
+        ); 
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -218,14 +262,25 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 1.0),
-                    child: IconButton(
-                      onPressed: () async => imagePick(),
-                      icon: Icon(Icons.image, color: Colors.white, size: 40.0),
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: CircleAvatar(
+                      child: IconButton(
+                      onPressed: () async => imagePick(camera: true),
+                      icon: Icon(Icons.camera, color: Colors.white),
                     ),
+                    )
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 1.0),
+                    padding: const EdgeInsets.only(left: 4.0),
+                    child: CircleAvatar(
+                      child: IconButton(
+                      onPressed: () async => imagePick(),
+                      icon: Icon(Icons.image, color: Colors.white),
+                    ),
+                    )
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4.0),
                     child: CircleAvatar(
                       backgroundColor: Theme.of(context).colorScheme.secondary,
                       child: IconButton(
